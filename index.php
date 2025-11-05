@@ -1,4 +1,5 @@
 <?php
+session_start();
 require 'config.php';
 
 $error = '';
@@ -31,7 +32,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         if($admin && password_verify($password, $admin['password'])){
             $_SESSION['admin_id'] = $admin['id'];
-            header("Location: admin/index.php");
+            header("Location: admin_dashboard.php");
             exit;
         } else {
             $error = "Invalid credentials.";

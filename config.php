@@ -1,10 +1,8 @@
 <?php
-session_start();
-
 $host = 'localhost';
 $db   = 'hostelhive';
 $user = 'root';
-$pass = ''; // your XAMPP MySQL password
+$pass = ''; // default XAMPP password is empty
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
@@ -17,7 +15,7 @@ $options = [
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (PDOException $e) {
-    echo 'DB connection failed: ' . htmlspecialchars($e->getMessage());
+    echo 'Database connection failed: ' . htmlspecialchars($e->getMessage());
     exit;
 }
 ?>
