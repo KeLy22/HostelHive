@@ -19,7 +19,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $error = "Your account is not approved yet.";
         } elseif(password_verify($password, $student['password'])){
             $_SESSION['student_id'] = $student['id'];
-            header("Location: student/dashboard.php");
+            header("Location: student_dashboard.php");
             exit;
         } else {
             $error = "Invalid credentials.";
