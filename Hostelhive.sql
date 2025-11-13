@@ -32,6 +32,17 @@ CREATE TABLE IF NOT EXISTS students (
   room_pref VARCHAR(50),
   status ENUM('pending','approved','rejected') DEFAULT 'pending',
   room_id INT DEFAULT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  room_no VARCHAR(20) DEFAULT NULL
 );
 
+-- ===========================================
+-- Table: rooms
+-- ===========================================
+CREATE TABLE IF NOT EXISTS rooms (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    room_no VARCHAR(20) NOT NULL UNIQUE,
+    room_type VARCHAR(50) DEFAULT 'Shared',
+    capacity INT DEFAULT 2,
+    fee DECIMAL(10,2) DEFAULT 3000.00
+);

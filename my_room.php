@@ -40,74 +40,107 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['request_room_change']
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>My Room - HostelHive</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-body { background-color: #f9fafb; font-family: 'Segoe UI', sans-serif; }
-.sidebar {
-    width: 230px; background-color: #2c3e50;
-    position: fixed; top: 0; left: 0;
-    height: 100%; color: white; padding-top: 30px;
-}
-.sidebar h4 { text-align: center; margin-bottom: 30px; }
-.sidebar a { display: block; color: white; padding: 12px 20px; text-decoration: none; }
-.sidebar a:hover { background-color: #34495e; }
-.main-content { margin-left: 240px; padding: 30px; }
-.card { border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-</style>
+    <meta charset="UTF-8">
+    <title>My Room - HostelHive</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f9fafb;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .sidebar {
+            width: 230px;
+            background-color: #2c3e50;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            color: white;
+            padding-top: 30px;
+        }
+
+        .sidebar h4 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            background-color: #34495e;
+        }
+
+        .main-content {
+            margin-left: 240px;
+            padding: 30px;
+        }
+
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="sidebar">
-        <h4>🏠 HostelHive</h4>
+    <div class="sidebar">
+        <h4>HostelHive Student</h4>
         <a href="student_dashboard.php">🏠 Dashboard</a>
         <a href="my_room.php">🏘️ My Room</a>
-        <a href="profile.php">⚙️ Profile Settings</a>
+        <a href="student_profile.php">⚙️ Profile Settings</a>
         <a href="logout.php">🚪 Logout</a>
     </div>
 
-<div class="main-content">
-    <h3>My Room Details 🏡</h3>
+    <div class="main-content">
+        <h3>My Room Details 🏡</h3>
 
-    <?php if($message): ?>
-        <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
-    <?php endif; ?>
-
-    <div class="card p-3 my-3">
-        <?php if ($room): ?>
-            <h5>Room Assigned</h5>
-            <hr>
-            <p><strong>Room Number:</strong> <?= htmlspecialchars($room['room_number']); ?></p>
-            <p><strong>Room Type:</strong> <?= htmlspecialchars($room['room_type']); ?></p>
-            <p><strong>Capacity:</strong> <?= htmlspecialchars($room['capacity']); ?></p>
-            <p><strong>Status:</strong> <span class="badge bg-success">Approved</span></p>
-        <?php elseif ($request && $request['status'] == 'pending'): ?>
-            <h5>Room Request Pending</h5>
-            <hr>
-            <p>Your request for Room ID <strong><?= htmlspecialchars($request['requested_room_id']); ?></strong> is <span class="badge bg-warning text-dark">Pending</span>.</p>
-            <p><strong>Reason:</strong> <?= htmlspecialchars($request['reason']); ?></p>
-        <?php else: ?>
-            <p>You have not been assigned any room or requested yet.</p>
+        <?php if ($message): ?>
+            <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
         <?php endif; ?>
-    </div>
 
-    <div class="card p-3 my-3">
-        <h5>🔄 Request Room Change</h5>
-        <hr>
-        <form method="POST">
-            <div class="mb-2">
-                <label>Requested Room ID</label>
-                <input type="number" name="requested_room_id" class="form-control" placeholder="Enter room ID" required>
-            </div>
-            <div class="mb-2">
-                <label>Reason</label>
-                <textarea name="reason" class="form-control" rows="3" required></textarea>
-            </div>
-            <button type="submit" name="request_room_change" class="btn btn-primary">Submit Request</button>
-        </form>
+        <div class="card p-3 my-3">
+            <?php if ($room): ?>
+                <h5>Room Assigned</h5>
+                <hr>
+                <p><strong>Room Number:</strong> <?= htmlspecialchars($room['room_number']); ?></p>
+                <p><strong>Room Type:</strong> <?= htmlspecialchars($room['room_type']); ?></p>
+                <p><strong>Capacity:</strong> <?= htmlspecialchars($room['capacity']); ?></p>
+                <p><strong>Status:</strong> <span class="badge bg-success">Approved</span></p>
+            <?php elseif ($request && $request['status'] == 'pending'): ?>
+                <h5>Room Request Pending</h5>
+                <hr>
+                <p>Your request for Room ID <strong><?= htmlspecialchars($request['requested_room_id']); ?></strong> is <span class="badge bg-warning text-dark">Pending</span>.</p>
+                <p><strong>Reason:</strong> <?= htmlspecialchars($request['reason']); ?></p>
+            <?php else: ?>
+                <p>You have not been assigned any room or requested yet.</p>
+            <?php endif; ?>
+        </div>
+
+        <div class="card p-3 my-3">
+            <h5>🔄 Request Room Change</h5>
+            <hr>
+            <form method="POST">
+                <div class="mb-2">
+                    <label>Requested Room ID</label>
+                    <input type="number" name="requested_room_id" class="form-control" placeholder="Enter room ID" required>
+                </div>
+                <div class="mb-2">
+                    <label>Reason</label>
+                    <textarea name="reason" class="form-control" rows="3" required></textarea>
+                </div>
+                <button type="submit" name="request_room_change" class="btn btn-primary">Submit Request</button>
+            </form>
+        </div>
     </div>
-</div>
 </body>
+
 </html>
