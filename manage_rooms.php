@@ -1,4 +1,4 @@
-<?php
+<?php 
 session_start();
 require 'config.php';
 
@@ -24,7 +24,7 @@ if (isset($_POST['add_room'])) {
     $fee = isset($_POST['fee']) ? floatval($_POST['fee']) : 3000.00;
 
     if (!empty($room_no)) {
-        $stmt = $pdo->prepare("INSERT INTO rooms (room_no, room_type, capacity, fee) VALUES (?, ?, ?, ?)");
+        $stmt = $pdo->prepare("INSERT INTO rooms (room_no, room_type, capacity, fee, occupied) VALUES (?, ?, ?, ?, 0)");
         $stmt->execute([$room_no, $room_type, $capacity, $fee]);
     }
     header("Location: manage_rooms.php");
@@ -40,7 +40,13 @@ if ($search !== '') {
     $stmt = $pdo->query("SELECT * FROM rooms ORDER BY id DESC");
 }
 
-$rooms = $stmt->fetchAll();
+// Fetch rooms and calculate available seats
+$rooms = [];
+while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $row['occupied'] = $row['occupied'] ?? 0; 
+    $row['available'] = $row['capacity'] - $row['occupied'];
+    $rooms[] = $row;
+}
 ?>
 
 <!DOCTYPE html>
@@ -221,6 +227,8 @@ a.delete { background-color: #dc3545; }
             <th>Room No</th>
             <th>Type</th>
             <th>Capacity</th>
+            <th>Occupied</th>
+            <th>Available</th>
             <th>Fee</th>
             <th>Actions</th>
         </tr>
@@ -231,6 +239,8 @@ a.delete { background-color: #dc3545; }
                 <td><?= htmlspecialchars($room['room_no']) ?></td>
                 <td><?= htmlspecialchars($room['room_type']) ?></td>
                 <td><?= $room['capacity'] ?></td>
+                <td><?= $room['occupied'] ?></td>
+                <td><?= $room['available'] ?></td>
                 <td><?= $room['fee'] ?></td>
                 <td>
                     <a href="edit_room.php?id=<?= $room['id'] ?>" class="edit">Edit</a>
@@ -239,7 +249,7 @@ a.delete { background-color: #dc3545; }
             </tr>
             <?php endforeach; ?>
         <?php else: ?>
-            <tr><td colspan="6">No rooms found.</td></tr>
+            <tr><td colspan="8">No rooms found.</td></tr>
         <?php endif; ?>
     </table>
 </div>
