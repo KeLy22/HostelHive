@@ -154,6 +154,7 @@ body {
     <h2>HostelHive Admin</h2>
     <a href="admin_dashboard.php">🏠 Home</a>
     <a href="student_requests.php">📥 Student Requests</a>
+    <a href="room_change_requests.php">🔄 Room Change Requests</a>
     <a href="manage_rooms.php">🏘️ Manage Rooms</a>
     <a href="student_list.php">👩‍🎓 Hostel Students</a>
     <a href="profile.php">⚙️ Profile Settings</a>

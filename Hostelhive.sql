@@ -48,3 +48,24 @@ CREATE TABLE IF NOT EXISTS rooms (
     fee DECIMAL(10,2) DEFAULT 3000.00,
     occupied INT DEFAULT 0
 );
+
+-- ===========================================
+-- Table: room_change_requests
+-- ===========================================
+CREATE TABLE IF NOT EXISTS room_change_requests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,              
+    current_room_id INT NULL,             
+    requested_room_id INT NOT NULL,       
+    requested_room_type VARCHAR(50) NULL, 
+    reason TEXT NOT NULL,                 
+    status ENUM('pending','approved','rejected') DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Foreign key relationships:
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
+    FOREIGN KEY (current_room_id) REFERENCES rooms(id) ON DELETE SET NULL,
+    FOREIGN KEY (requested_room_id) REFERENCES rooms(id) ON DELETE CASCADE
+);
+
+

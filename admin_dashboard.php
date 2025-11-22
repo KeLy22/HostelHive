@@ -14,10 +14,13 @@ $stmt->execute([$_SESSION['admin_id']]);
 $admin = $stmt->fetch();
 $admin_name = $admin ? $admin['name'] : 'Admin';
 
-// ✅ Real counts from database
+// Real counts from database
 $pending = $pdo->query("SELECT COUNT(*) FROM students WHERE status = 'pending'")->fetchColumn();
 $total_students = $pdo->query("SELECT COUNT(*) FROM students WHERE status = 'approved'")->fetchColumn();
 $total_rooms = $pdo->query("SELECT COUNT(*) FROM rooms")->fetchColumn() ?? 0;
+
+// Pending room change requests
+$pending_room_change = $pdo->query("SELECT COUNT(*) FROM room_change_requests WHERE status = 'pending'")->fetchColumn();
 ?>
 
 <!DOCTYPE html>
@@ -64,6 +67,8 @@ body {
     padding: 20px;
     flex-grow: 1;
 }
+
+/* Header */
 .header {
     display: flex;
     justify-content: space-between;
@@ -72,7 +77,10 @@ body {
     padding: 15px 25px;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
 }
+
+/* Stats Cards */
 .stats {
     display: flex;
     gap: 20px;
@@ -98,10 +106,12 @@ body {
 </style>
 </head>
 <body>
+
 <div class="sidebar">
     <h2>HostelHive Admin</h2>
     <a href="admin_dashboard.php">🏠 Home</a>
     <a href="student_requests.php">📥 Student Requests</a>
+    <a href="room_change_requests.php">🔄 Room Change Requests</a>
     <a href="manage_rooms.php">🏘️ Manage Rooms</a>
     <a href="student_list.php">👩‍🎓 Hostel Students</a>
     <a href="profile.php">⚙️ Profile Settings</a>
@@ -119,6 +129,10 @@ body {
             <p><?php echo $pending; ?> new registrations</p>
         </div>
         <div class="card">
+            <h3>Pending Room Change</h3>
+            <p><?php echo $pending_room_change; ?> requests</p>
+        </div>
+        <div class="card">
             <h3>Total Students</h3>
             <p><?php echo $total_students; ?> approved students</p>
         </div>
@@ -128,5 +142,6 @@ body {
         </div>
     </div>
 </div>
+
 </body>
 </html>
